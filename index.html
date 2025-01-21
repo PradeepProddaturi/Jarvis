@@ -76,19 +76,19 @@
     <script>
         async function fetchData() {
             const gdpGrowthUrl = "https://api.worldbank.org/v2/country/IN/indicator/NY.GDP.MKTP.KD.ZG?format=json";
-          /*  const sensexUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=^BSESN&apikey=YOUR_API_KEY";
-            const niftyUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=^NSEI&apikey=YOUR_API_KEY"; 
+            const sensexUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=^BSESN&apikey=S5QON9EOLEKUXOLM";
+            const niftyUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=^NSEI&apikey=S5QON9EOLEKUXOLM"; 
             const perCapitaIncomeUrl = "https://api.worldbank.org/v2/country/IN/indicator/NY.GDP.PCAP.CD?format=json"; 
             const energySplitUrl = "https://api.iea.org/v1/indicators/total-energy-supply-by-source?country=IN";
             const forexReservesUrl = "https://api.example.com/forex-reserves"; // Replace with actual API 
-           const co2EmissionsUrl = "https://api.worldbank.org/v2/country/IN/indicator/EN.ATM.CO2E.KT?format=json"; */
+           const co2EmissionsUrl = "https://api.worldbank.org/v2/country/IN/indicator/EN.ATM.CO2E.KT?format=json"; 
 
             try {
                 const gdpResponse = await fetch(gdpGrowthUrl);
                 const gdpData = await gdpResponse.json();
                 document.getElementById("gdpGrowth").querySelector("p").innerText = gdpData[1][0].value;
 
-          /*      const sensexResponse = await fetch(sensexUrl);
+                const sensexResponse = await fetch(sensexUrl);
                 const sensexData = await sensexResponse.json();
                 document.getElementById("sensex").querySelector("p").innerText = sensexData["Time Series (Daily)"][Object.keys(sensexData["Time Series (Daily)"])[0]]["4. close"];
 
@@ -110,7 +110,7 @@
 
                 const co2EmissionsResponse = await fetch(co2EmissionsUrl);
                 const co2EmissionsData = await co2EmissionsResponse.json();
-                document.getElementById("co2Emissions").querySelector("p").innerText = co2EmissionsData[1][0].value; */
+                document.getElementById("co2Emissions").querySelector("p").innerText = co2EmissionsData[1][0].value; 
 
             } catch (error) {
                 console.error("Error fetching data:", error);
