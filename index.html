@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India Economic Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .card {
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .loading {
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>India Economic Dashboard</h1>
+        <div class="card">
+            <h2>GDP Growth (%)</h2>
+            <p id="gdp-growth" class="loading">Loading...</p>
+        </div>
+        <div class="card">
+            <h2>SENSEX</h2>
+            <p id="sensex" class="loading">Loading...</p>
+        </div>
+        <div class="card">
+            <h2>NIFTY</h2>
+            <p id="nifty" class="loading">Loading...</p>
+        </div>
+        <div class="card">
+            <h2>Per Capita Income (USD)</h2>
+            <p id="per-capita-income" class="loading">Loading...</p>
+        </div>
+    </div>
+
+    <script>
+        // Fetch GDP Growth from World Bank API
+        fetch("https://api.worldbank.org/v2/country/IN/indicator/NY.GDP.MKTP.KD.ZG?format=json")
+            .then(response => response.json())
+            .then(data => {
+                const gdpGrowth = data[1][0].value;
+                document.getElementById("gdp-growth").textContent = gdpGrowth ? `${gdpGrowth.toFixed(2)}%` : "Data not available";
+            })
+            .catch(error => {
+                console.error("Error fetching GDP Growth:", error);
+                document.getElementById("gdp-growth").textContent = "Error fetching data";
+            });
+
+        // Fetch SENSEX data from Alpha Vantage
+        fetch("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=^BSESN&apikey=S5QON9EOLEKUXOLM")
+            .then(response => response.json())
+            .then(data => {
+                const lastRefreshed = data["Meta Data"]["3. Last Refreshed"];
+                const sensex = data["Time Series (Daily)"][lastRefreshed]["4. close"];
+                document.getElementById("sensex").textContent = sensex ? `₹ ${parseFloat(sensex).toFixed(2)}` : "Data not available";
+            })
+            .catch(error => {
+                console.error("Error fetching SENSEX:", error);
+                document.getElementById("sensex").textContent = "Error fetching data";
+            });
+
+        // Fetch NIFTY data from Alpha Vantage
+        fetch("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=^NSEI&apikey=S5QON9EOLEKUXOLM")
+            .then(response => response.json())
+            .then(data => {
+                const lastRefreshed = data["Meta Data"]["3. Last Refreshed"];
+                const nifty = data["Time Series (Daily)"][lastRefreshed]["4. close"];
+                document.getElementById("nifty").textContent = nifty ? `₹ ${parseFloat(nifty).toFixed(2)}` : "Data not available";
+            })
+            .catch(error => {
+                console.error("Error fetching NIFTY:", error);
+                document.getElementById("nifty").textContent = "Error fetching data";
+            });
+
+        // Fetch Per Capita Income from World Bank API
+        fetch("https://api.worldbank.org/v2/country/IN/indicator/NY.GDP.PCAP.CD?format=json")
+            .then(response => response.json())
+            .then(data => {
+                const perCapitaIncome = data[1][0].value;
+                document.getElementById("per-capita-income").textContent = perCapitaIncome ? `$ ${perCapitaIncome.toFixed(2)}` : "Data not available";
+            })
+            .catch(error => {
+                console.error("Error fetching Per Capita Income:", error);
+                document.getElementById("per-capita-income").textContent = "Error fetching data";
+            });
+    </script>
+</body>
+</html>
