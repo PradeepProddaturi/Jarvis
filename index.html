@@ -60,7 +60,7 @@
             });
 
         // Fetch SENSEX data from Alpha Vantage
-        fetch("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=^BSESN&apikey=S5QON9EOLEKUXOLM")
+        fetch("https://query1.finance.yahoo.com/v8/finance/chart/%5EBSESN")
             .then(response => response.json())
             .then(data => {
                 const lastRefreshed = data["Meta Data"]["3. Last Refreshed"];
