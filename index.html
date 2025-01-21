@@ -3,122 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indian Economy Dashboard</title>
+    <title>India Economic Dashboard</title>
     <style>
+        /* Styling for the Dashboard */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
+            background-color: #f4f4f4;
         }
-        .header {
-            text-align: center;
-            padding: 20px;
-            background-color: #333;
-            color: white;
+        .dashboard-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 20px;
         }
-        .container {
-            padding: 20px;
-        }
-        .card {
+        .widget {
             background-color: white;
             padding: 20px;
             margin: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 250px;
             text-align: center;
         }
-        .row {
-            display: flex;
-            flex-wrap: wrap;
+        .widget h3 {
+            margin-bottom: 15px;
         }
-        .col {
-            flex: 1;
-            margin: 10px;
+        .widget p {
+            font-size: 1.2em;
+            color: #333;
         }
-        .card h2 {
-            margin-bottom: 10px;
-        }
-        .card p {
-            font-size: 20px;
-            font-weight: bold;
+        .widget .loading {
+            font-size: 1.2em;
+            color: #999;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Indian Economy Dashboard</h1>
-        <p>Real-time Economic Indicators</p>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="card" id="gdpGrowth">
-                    <h2>GDP Growth</h2>
-                    <p>Loading...</p>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card" id="sensex">
-                    <h2>Sensex</h2>
-                    <p>Loading...</p>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card" id="nifty">
-                    <h2>Nifty</h2>
-                    <p>Loading...</p>
-                </div>
-            </div>
+
+    <div class="dashboard-container">
+        <div class="widget" id="gdpGrowth">
+            <h3>GDP Growth</h3>
+            <p class="loading">Loading...</p>
         </div>
-        <div class="row">
-            <div class="col">
-                <div class="card" id="energySplit">
-                    <h2>Energy Split</h2>
-                    <p>Loading...</p>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card" id="forexReserves">
-                    <h2>Forex Reserves</h2>
-                    <p>Loading...</p>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card" id="co2Emissions">
-                    <h2>CO2 Emissions</h2>
-                    <p>Loading...</p>
-                </div>
-            </div>
+        <div class="widget" id="sensex">
+            <h3>SENSEX</h3>
+            <p class="loading">Loading...</p>
+        </div>
+        <div class="widget" id="nifty">
+            <h3>NIFTY</h3>
+            <p class="loading">Loading...</p>
+        </div>
+        <div class="widget" id="perCapitaIncome">
+            <h3>Per Capita Income</h3>
+            <p class="loading">Loading...</p>
+        </div>
+        <div class="widget" id="energySplit">
+            <h3>Energy Split</h3>
+            <p class="loading">Loading...</p>
+        </div>
+        <div class="widget" id="forexReserves">
+            <h3>Forex Reserves</h3>
+            <p class="loading">Loading...</p>
+        </div>
+        <div class="widget" id="co2Emissions">
+            <h3>CO2 Emissions</h3>
+            <p class="loading">Loading...</p>
         </div>
     </div>
 
     <script>
-        // Function to fetch data from APIs
         async function fetchData() {
-            // Example API endpoints (replace with actual endpoints as necessary)
-            const gdpGrowthUrl = "https://api.tradingeconomics.com/india/gdp-growth";  // Replace with actual GDP API
-            const sensexUrl = "https://api.financeapi.com/stock-market?indices=sensex";          // Replace with actual Sensex API
-            const niftyUrl = "https://api.financeapi.com/stock-market?indices=nifty";            // Replace with actual Nifty API
-            const energySplitUrl = "https://api.iea.org/india-energy-split";  // Replace with actual Energy Split API
-            const forexReservesUrl = "https://api.rbi.org.in/forex-reserves"; // Replace with actual Forex API
-            const co2EmissionsUrl = "https://api.climatewatchdata.org/india/co2-emissions";  // Replace with actual CO2 Emissions API
+            const gdpGrowthUrl = "https://api.worldbank.org/v2/country/IN/indicator/NY.GDP.MKTP.KD.ZG?format=json";
+            const sensexUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=^BSESN&apikey=YOUR_API_KEY";
+            const niftyUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=^NSEI&apikey=YOUR_API_KEY";
+            const perCapitaIncomeUrl = "https://api.worldbank.org/v2/country/IN/indicator/NY.GDP.PCAP.CD?format=json";
+            const energySplitUrl = "https://api.iea.org/v1/indicators/total-energy-supply-by-source?country=IN";
+            const forexReservesUrl = "https://api.example.com/forex-reserves"; // Replace with actual API
+            const co2EmissionsUrl = "https://api.worldbank.org/v2/country/IN/indicator/EN.ATM.CO2E.KT?format=json";
 
             try {
                 const gdpResponse = await fetch(gdpGrowthUrl);
                 const gdpData = await gdpResponse.json();
-                document.getElementById("gdpGrowth").querySelector("p").innerText = gdpData.gdpGrowth;
+                document.getElementById("gdpGrowth").querySelector("p").innerText = gdpData[1][0].value;
 
                 const sensexResponse = await fetch(sensexUrl);
                 const sensexData = await sensexResponse.json();
-                document.getElementById("sensex").querySelector("p").innerText = sensexData.sensex;
+                document.getElementById("sensex").querySelector("p").innerText = sensexData["Time Series (Daily)"][Object.keys(sensexData["Time Series (Daily)"])[0]]["4. close"];
 
                 const niftyResponse = await fetch(niftyUrl);
                 const niftyData = await niftyResponse.json();
-                document.getElementById("nifty").querySelector("p").innerText = niftyData.nifty;
+                document.getElementById("nifty").querySelector("p").innerText = niftyData["Time Series (Daily)"][Object.keys(niftyData["Time Series (Daily)"])[0]]["4. close"];
+
+                const perCapitaIncomeResponse = await fetch(perCapitaIncomeUrl);
+                const perCapitaIncomeData = await perCapitaIncomeResponse.json();
+                document.getElementById("perCapitaIncome").querySelector("p").innerText = perCapitaIncomeData[1][0].value;
 
                 const energySplitResponse = await fetch(energySplitUrl);
                 const energySplitData = await energySplitResponse.json();
-                document.getElementById("energySplit").querySelector("p").innerText = energySplitData.energySplit;
+                document.getElementById("energySplit").querySelector("p").innerText = energySplitData.data[0].value;
 
                 const forexReservesResponse = await fetch(forexReservesUrl);
                 const forexReservesData = await forexReservesResponse.json();
@@ -126,7 +110,7 @@
 
                 const co2EmissionsResponse = await fetch(co2EmissionsUrl);
                 const co2EmissionsData = await co2EmissionsResponse.json();
-                document.getElementById("co2Emissions").querySelector("p").innerText = co2EmissionsData.co2Emissions;
+                document.getElementById("co2Emissions").querySelector("p").innerText = co2EmissionsData[1][0].value;
 
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -134,8 +118,7 @@
             }
         }
 
-        // Call the fetchData function on page load
-        window.onload = fetchData;
+        fetchData();
     </script>
 </body>
 </html>
