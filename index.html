@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Economy Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            margin: 10px;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        h3 {
+            margin: 10px 0;
+            color: #333;
+        }
+        .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Indian Economy Dashboard</h1>
+    </header>
+    <div class="container">
+        <div id="energy-split" class="card">
+            <h3>Energy Split</h3>
+            <p class="value">Loading...</p>
+        </div>
+        <div id="stock-market" class="card">
+            <h3>Stock Market</h3>
+            <p class="value">Loading...</p>
+        </div>
+        <div id="forex-reserves" class="card">
+            <h3>Forex Reserves</h3>
+            <p class="value">Loading...</p>
+        </div>
+        <div id="co2-emissions" class="card">
+            <h3>CO2 Emissions</h3>
+            <p class="value">Loading...</p>
+        </div>
+        <div id="gdp-growth" class="card">
+            <h3>GDP Growth</h3>
+            <p class="value">Loading...</p>
+        </div>
+        <div id="sensex-nifty" class="card">
+            <h3>Sensex & Nifty</h3>
+            <p class="value">Sensex: Loading...</p>
+            <p class="value">Nifty: Loading...</p>
+        </div>
+        <div id="per-capita-income" class="card">
+            <h3>Per Capita Income</h3>
+            <p class="value">Loading...</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
