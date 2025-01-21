@@ -4,98 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>India Economic Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
         }
         .container {
-            max-width: 800px;
-            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
         }
-        .card {
-            background-color: #f9f9f9;
-            padding: 20px;
-            margin: 10px 0;
+        .widget {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
         }
-        .loading {
-            color: gray;
+        .widget h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        canvas {
+            max-width: 100%;
         }
     </style>
 </head>
 <body>
+    <h1>India Economic Dashboard</h1>
     <div class="container">
-        <h1>India Economic Dashboard</h1>
-        <div class="card">
-            <h2>GDP Growth (%)</h2>
-            <p id="gdp-growth" class="loading">Loading...</p>
+        <div class="widget">
+            <h2>GDP Growth</h2>
+            <div id="gdp">Loading...</div>
         </div>
-        <div class="card">
-            <h2>SENSEX</h2>
-            <p id="sensex" class="loading">Loading...</p>
+        <div class="widget">
+            <h2>Sensex</h2>
+            <div id="sensex">Loading...</div>
         </div>
-        <div class="card">
-            <h2>NIFTY</h2>
-            <p id="nifty" class="loading">Loading...</p>
+        <div class="widget">
+            <h2>Nifty</h2>
+            <div id="nifty">Loading...</div>
         </div>
-        <div class="card">
-            <h2>Per Capita Income (USD)</h2>
-            <p id="per-capita-income" class="loading">Loading...</p>
+        <div class="widget">
+            <h2>Per Capita Income</h2>
+            <div id="income">Loading...</div>
+        </div>
+        <div class="widget">
+            <h2>Forex Reserves</h2>
+            <div id="forex">Loading...</div>
+        </div>
+        <div class="widget">
+            <h2>CO2 Emissions</h2>
+            <div id="co2">Loading...</div>
+        </div>
+        <div class="widget">
+            <h2>Energy Split</h2>
+            <canvas id="energySplitChart"></canvas>
         </div>
     </div>
-
     <script>
-        // Fetch GDP Growth from World Bank API
-        fetch("https://api.worldbank.org/v2/country/IN/indicator/NY.GDP.MKTP.KD.ZG?format=json")
-            .then(response => response.json())
-            .then(data => {
-                const gdpGrowth = data[1][0].value;
-                document.getElementById("gdp-growth").textContent = gdpGrowth ? `${gdpGrowth.toFixed(2)}%` : "Data not available";
-            })
-            .catch(error => {
-                console.error("Error fetching GDP Growth:", error);
-                document.getElementById("gdp-growth").textContent = "Error fetching data";
-            });
+        async function fetchData() {
+            // GDP Growth (Placeholder data as an example)
+            document.getElementById('gdp').innerText = "7.8% (Placeholder)";
+            
+            // Fetch Sensex data from Yahoo Finance API
+            try {
+                const sensexResponse = await fetch("https://query1.finance.yahoo.com/v7/finance/quote?symbols=^BSESN");
+                const sensexData = await sensexResponse.json();
+                document.getElementById('sensex').innerText = 
+                    sensexData.quoteResponse.result[0].regularMarketPrice + " INR";
+            } catch (error) {
+                document.getElementById('sensex').innerText = "Error fetching Sensex data.";
+            }
 
-        // Fetch SENSEX data from Alpha Vantage
-        fetch("https://query1.finance.yahoo.com/v8/finance/chart/%5EBSESN")
-            .then(response => response.json())
-            .then(data => {
-                const lastRefreshed = data["Meta Data"]["3. Last Refreshed"];
-                const sensex = data["Time Series (Daily)"][lastRefreshed]["4. close"];
-                document.getElementById("sensex").textContent = sensex ? `₹ ${parseFloat(sensex).toFixed(2)}` : "Data not available";
-            })
-            .catch(error => {
-                console.error("Error fetching SENSEX:", error);
-                document.getElementById("sensex").textContent = "Error fetching data";
-            });
+            // Fetch Nifty data (Placeholder)
+            document.getElementById('nifty').innerText = "18,200.00 (Placeholder)";
+            
+            // Per Capita Income (Placeholder)
+            document.getElementById('income').innerText = "₹2,04,000 (Placeholder)";
+            
+            // Forex Reserves (Placeholder)
+            document.getElementById('forex').innerText = "₹600 Billion (Placeholder)";
+            
+            // CO2 Emissions (Placeholder)
+            document.getElementById('co2').innerText = "2.5 Billion Tonnes (Placeholder)";
+        }
 
-        // Fetch NIFTY data from Alpha Vantage
-        fetch("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=^NSEI&apikey=S5QON9EOLEKUXOLM")
-            .then(response => response.json())
-            .then(data => {
-                const lastRefreshed = data["Meta Data"]["3. Last Refreshed"];
-                const nifty = data["Time Series (Daily)"][lastRefreshed]["4. close"];
-                document.getElementById("nifty").textContent = nifty ? `₹ ${parseFloat(nifty).toFixed(2)}` : "Data not available";
-            })
-            .catch(error => {
-                console.error("Error fetching NIFTY:", error);
-                document.getElementById("nifty").textContent = "Error fetching data";
+        function drawEnergySplitChart() {
+            const ctx = document.getElementById('energySplitChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Coal', 'Renewables', 'Hydro', 'Nuclear'],
+                    datasets: [{
+                        data: [55, 25, 15, 5], // Dummy Data
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
             });
+        }
 
-        // Fetch Per Capita Income from World Bank API
-        fetch("https://api.worldbank.org/v2/country/IN/indicator/NY.GDP.PCAP.CD?format=json")
-            .then(response => response.json())
-            .then(data => {
-                const perCapitaIncome = data[1][0].value;
-                document.getElementById("per-capita-income").textContent = perCapitaIncome ? `$ ${perCapitaIncome.toFixed(2)}` : "Data not available";
-            })
-            .catch(error => {
-                console.error("Error fetching Per Capita Income:", error);
-                document.getElementById("per-capita-income").textContent = "Error fetching data";
-            });
+        fetchData();
+        drawEnergySplitChart();
     </script>
 </body>
 </html>
